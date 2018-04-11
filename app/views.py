@@ -15,7 +15,7 @@ from wtforms.fields import PasswordField
 from sqlalchemy import Date, cast
 
 import numpy as np
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, accuracy_score
 
 from app import app, security, db
 from models import User, Competition, Submission
@@ -33,12 +33,12 @@ def upload_file():
     try:
 
         now = datetime.now()
-        
+
         competitions = [c for c in Competition.query.all() if (not c.start_on or
             c.start_on <= now) and (not c.end_on or c.end_on >= now)]
 
         if request.method == 'POST':
-            
+
             competition_id = request.form.get('competitions')
             if competition_id == None:
                 flash('No competition selected')
@@ -56,18 +56,18 @@ def upload_file():
             if file.filename == '':
                 flash('No selected file')
                 return redirect(request.url)
-            
+
             # check if the user has made submissions in the past 24h
-            if Submission.query.filter_by(user_id=user_id).filter_by(competition_id=competition_id).filter(Submission.submitted_on>now-timedelta(hours=23)).count() > 0:
-                flash("You already did a submission in the past 24h.")
-                return redirect(request.url)
+            # if Submission.query.filter_by(user_id=user_id).filter_by(competition_id=competition_id).filter(Submission.submitted_on>now-timedelta(hours=23)).count() > 0:
+            #     flash("You already did a submission in the past 24h.")
+            #     return redirect(request.url)
 
             if file:
 
                 filename = str(uuid.uuid4()) + ".csv"
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(filepath)
-                
+
                 # save submission
                 submission = Submission()
                 submission.user_id = login.current_user.id
@@ -87,7 +87,6 @@ def upload_file():
         flash(str(e))
         return redirect(request.url)
 
-
 #@login_required
 def get_scores(filename, competition_id):
     "Returns (preview_score, score)"
@@ -95,9 +94,9 @@ def get_scores(filename, competition_id):
     regex = r'(.+),(\d+\.\d+|\d+)'
 
     # parse files
-    predictions = np.fromregex(filename, regex, [('id', 'S128'), ('v0', np.float32)])
+    predictions = np.fromregex(filename, regex, [('id', np.int64), ('v0', 'S128')])
     groundtruth_filename = os.path.join(app.config['GROUNDTRUTH_FOLDER'], Competition.query.get(competition_id).groundtruth)
-    groundtruth = np.fromregex(groundtruth_filename, regex, [('id', 'S128'), ('v0', np.float32)])
+    groundtruth = np.fromregex(groundtruth_filename, regex, [('id', np.int64), ('v0', 'S128')])
 
     # sort data
     predictions.sort(order='id')
@@ -105,12 +104,12 @@ def get_scores(filename, competition_id):
 
     if predictions['id'].size == 0 or not np.array_equal(predictions['id'], groundtruth['id']):
         raise ParsingError("Error parsing the submission file. Make sure it has the right format and contains the right ids.")
-    
+
     # partition the data indices into two sets and evaluate separately
     splitpoint = int(np.round(len(groundtruth) * 0.15))
-    score_p = roc_auc_score(groundtruth['v0'][:splitpoint], predictions['v0'][:splitpoint])
-    score_f = roc_auc_score(groundtruth['v0'][splitpoint:], predictions['v0'][splitpoint:])
-    
+    score_p = accuracy_score(groundtruth['v0'][:splitpoint], predictions['v0'][:splitpoint])
+    score_f = accuracy_score(groundtruth['v0'][splitpoint:], predictions['v0'][splitpoint:])
+
     return (score_p, score_f)
 
 @app.route('/scores', methods=['GET', 'POST'])
@@ -160,13 +159,13 @@ def get_submissions():
             rows += row
 
 
-        s = """    
-        {{   
+        s = """
+        {{
           "cols": [
                 {{"id":"","label":"Date","pattern":"","type":"datetime"}},
                 {0}
-              ],  
-          "rows": [     
+              ],
+          "rows": [
                 {1}
               ]
         }}""".format(
@@ -252,7 +251,7 @@ class CompetitionAdmin(AdminModelView):
             'allow_overwrite': False
         }
     }
-    
+
 
 @login_required
 @app.route('/groundtruth/<filename>')
@@ -272,8 +271,8 @@ def get_groundtruth(filename):
 def get_submission(filename):
 
     submissions = Submission.query.filter_by(filename=filename)
-    
-    # make sure the current user is whether admin or the user who actually submitted the file    
+
+    # make sure the current user is whether admin or the user who actually submitted the file
     if ( submissions.count() > 0 and (login.current_user.has_role('admin') or login.current_user.id == submissions.first().user_id)):
         return send_from_directory(app.config['UPLOAD_FOLDER'],
                                    filename)
