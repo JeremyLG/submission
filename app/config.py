@@ -1,16 +1,16 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-db_ip = os.environ.get("SUBMISSION_DB_PORT_5432_TCP_ADDR") # ip of the linked postgres container (<linked container name>_PORT_<num port>_<protocol>_ADDR)
-db_port = os.environ.get("SUBMISSION_DB_PORT_5432_TCP_PORT") # port of the linked postgres container (<linked container name>_PORT_<num port>_<protocol>_ADDR)
+# db_ip = os.environ.get("SUBMISSION_DB_PORT_5432_TCP_ADDR") # ip of the linked postgres container (<linked container name>_PORT_<num port>_<protocol>_ADDR)
+# db_port = os.environ.get("SUBMISSION_DB_PORT_5432_TCP_PORT") # port of the linked postgres container (<linked container name>_PORT_<num port>_<protocol>_ADDR)
 
 
-SQLALCHEMY_DATABASE_URI = "postgresql://localhost/submission_db"
-#SQLALCHEMY_DATABASE_URI = "postgresql://jeremy:topkekissou@{0}:{1}/submission_db".format(db_ip, db_port)
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:issou@localhost:5432/submission_db"
+# SQLALCHEMY_DATABASE_URI = "postgresql://jeremy:topkekissou@{0}:{1}/submission_db".format(db_ip, db_port)
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-SECRET_KEY = 'somesecretkey'
+SECRET_KEY = 'estiamdatabase'
 
 # flask-security
 SECURITY_REGISTERABLE = True

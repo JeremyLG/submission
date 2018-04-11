@@ -3,17 +3,19 @@
 {% block content %}
 <section id="home">
     <img src="/static/images/LogoBAD.png"/>
-    <div id="title">Bird Audio Detection challenge</div>
+    <div id="title">ESTIAM Data Science Challenge 2018</div>
     {% if current_user.is_authenticated %}
     <div>
         {% if current_user.has_role('admin') %}
-        <a href="/scores">Scores</a> | <a href="/admin">Admin</a>
+        <li><a href="/scores" class="navbar-brand"><span class="glyphicon glyphicon-stats"></span>Scores</a> | <a href="/admin" class="navbar-brand"><span class="glyphicon glyphicon-user"></span>Admin</a></li>
+        <!-- <a href="/scores">Scores</a> | <a href="/admin">Admin</a> -->
         {% else %}
-        <a href="/submission">Submit predictions</a> | <a href="/scores">Scores</a>
+        <li><a href="/submission" class="navbar-brand"><span class="glyphicon glyphicon-signal"></span>Submit predictions</a> | <a href="/scores" class="navbar-brand"><span class="glyphicon glyphicon-stats"></span>Scores</a></li>
+        <!-- <a href="/submission">Submit predictions</a> | <a href="/scores">Scores</a> -->
         {% endif %}
     </div>
     {% endif %}
-    
+
 
 </section>
 {% endblock %}
