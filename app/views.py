@@ -91,9 +91,10 @@ def upload_file():
 def get_scores(filename, competition_id):
     "Returns (preview_score, score)"
 
-    regex = r'(.+),(\d+\.\d+|\d+)'
+    regex = r'(\d+),(.+)'
 
     # parse files
+    # filename = "C:\\Users\\jerem\\Documents\\ESTIAM\\UE Datascience\\test_only_labels.csv"
     predictions = np.fromregex(filename, regex, [('id', np.int64), ('v0', 'S128')])
     groundtruth_filename = os.path.join(app.config['GROUNDTRUTH_FOLDER'], Competition.query.get(competition_id).groundtruth)
     groundtruth = np.fromregex(groundtruth_filename, regex, [('id', np.int64), ('v0', 'S128')])
