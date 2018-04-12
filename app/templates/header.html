@@ -10,19 +10,15 @@
         {% if current_user.is_authenticated %}
         Logged as {{ current_user.username }}
         <a href="{{ url_for('security.logout') }}" role="button" class="btn btn-primary btn-lg">
-          <span class="glyphicon glyphicon-log-out"></span> Logout
+          <span class="fas fa-sign-in-alt"></span> Logout
         </a>
         {% else %}
-        <li class='list-group-item'>
-          <a href="{{ url_for('security.login') }}" role="button" class="btn btn-outline-info">
-            <span class="glyphicon glyphicon-log-in"></span> Login
-          </a>
-        </li>
-        <li class='list-group-item'>
-          <a href="{{ url_for('security.register')}}" role="button" class="btn btn-outline-info">
-            <span class="glyphicon glyphicon-list-alt"></span> Register
-          </a>
-        </li>
+        <a href="{{ url_for('security.login') }}" role="button" class="btn btn-outline-info">
+          <span class="glyphicon glyphicon-log-in"></span> Login
+        </a>
+        <a href="{{ url_for('security.register')}}" role="button" class="btn btn-outline-info">
+          <span class="glyphicon glyphicon-list-alt"></span> Register
+        </a>
         {% endif %}
     </div>
     <div style="clear: both"></div>
