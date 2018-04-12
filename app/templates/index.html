@@ -5,6 +5,7 @@
     <div id="title" style="color: #ff4411; font-size: 48px; font-family: 'Signika', sans-serif; padding-bottom: 10px; text-align: center;">ESTIAM Data Science Challenge 2018</div>
     <div id="images" style="text-align: center;"><img src="/static/images/LogoBAD.png" class="circle-img img-circle" alt="Bob"></div>
     {% if current_user.is_authenticated %}
+    <br/><br/>
     <div style="text-align: center;">
         {% if current_user.has_role('admin') %}
         <a href="/scores" role="button" class="btn btn-outline-primary">
