@@ -7,10 +7,20 @@
     {% if current_user.is_authenticated %}
     <div>
         {% if current_user.has_role('admin') %}
-        <span><a href="/scores" role="button" class="btn btn-outline-primary"><span class="glyphicon glyphicon-stats"></span>Scores</a> | <a href="/admin" role="button" class="btn btn-outline-danger"><span class="glyphicon glyphicon-user"></span>Admin</a></span>
+        <a href="/scores" role="button" class="btn btn-outline-primary">
+          <span class="glyphicon glyphicon-stats"></span> Scores
+        </a>
+        <a href="/admin" role="button" class="btn btn-outline-danger">
+          <span class="glyphicon glyphicon-user"></span> Admin
+        </a>
         <!-- <a href="/scores">Scores</a> | <a href="/admin">Admin</a> -->
         {% else %}
-        <span><a href="/submission" role="button" class="btn btn-outline-primary"><span class="glyphicon glyphicon-signal"></span>Submit predictions</a> | <a href="/scores" role="button" class="btn btn-outline-danger"><span class="glyphicon glyphicon-stats"></span>Scores</a></span>
+        <a href="/submission" role="button" class="btn btn-outline-primary">
+          <span class="glyphicon glyphicon-signal"></span> Submit predictions
+        </a>
+        <a href="/scores" role="button" class="btn btn-outline-danger">
+          <span class="glyphicon glyphicon-stats"></span> Scores
+        </a>
         <!-- <a href="/submission">Submit predictions</a> | <a href="/scores">Scores</a> -->
         {% endif %}
     </div>
