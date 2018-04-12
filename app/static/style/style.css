@@ -5,6 +5,9 @@ body{
     font-family: 'Lato', 'Helvetica',Sans-serif;
     padding-left: 1em;
     padding-right: 1em;
+    color:black;
+    background-color:white;
+    background-image:url(images/LogoBAD.png);
 }
 
 #content {
