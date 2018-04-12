@@ -1,6 +1,13 @@
 html, body, #container { height: 100%; }
 body > #container { height: auto; min-height: 100%; }
 title { color: #ff4411; font-size: 48px; font-family: 'Signika', sans-serif; padding-bottom: 10px; }
+.copyright {
+    float: left;
+}
+
+.social {
+    float: right;
+}
 body{
     font-family: 'Lato', 'Helvetica',Sans-serif;
     padding-left: 1em;
