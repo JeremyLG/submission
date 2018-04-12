@@ -2,7 +2,7 @@
 
 {% block content %}
 <section id="home">
-    <div id="title" style="text-align: center;">ESTIAM Data Science Challenge 2018</div>
+    <div id="title" style="color: #ff4411; font-size: 48px; font-family: 'Signika', sans-serif; padding-bottom: 10px; text-align: center;">ESTIAM Data Science Challenge 2018</div>
     <div id="images" style="text-align: center;"><img src="/static/images/LogoBAD.png" class="circle-img img-circle" alt="Bob"></div>
     {% if current_user.is_authenticated %}
     <div>
@@ -15,10 +15,10 @@
         </a>
         <!-- <a href="/scores">Scores</a> | <a href="/admin">Admin</a> -->
         {% else %}
-        <a href="/submission" role="button" class="btn btn-outline-primary">
+        <a href="/submission" style="text-align: center;" role="button" class="btn btn-outline-primary">
           <span class="fas fa-chart-line" aria-hidden="true"></span> Submit predictions
         </a>
-        <a href="/scores" role="button" class="btn btn-outline-danger">
+        <a href="/scores" style="text-align: center;" role="button" class="btn btn-outline-danger">
           <span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Scores
         </a>
         <!-- <a href="/submission">Submit predictions</a> | <a href="/scores">Scores</a> -->
