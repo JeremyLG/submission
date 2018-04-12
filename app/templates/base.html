@@ -19,12 +19,13 @@
                 <div id="content">{% block content %}{% endblock %}</div>
 
             </div>
-            <footer class="footer">
+            <div class="container footer navbar-fixed-bottom">
+              <footer>
                 {% block footer %}
-                ESTIAM - <script>document.write(new
-Date().getFullYear())</script>
+                ESTIAM - <script>document.write(new Date().getFullYear())</script>
                 {% endblock %}
-            </footer>
+              </footer>
+            </div>
     </body>
 {% block scripts %}{% endblock %}
 </html>

@@ -1,11 +1,10 @@
 <div id="header" style="margin-bottom=1em;">
     {% if request.path != url_for('home') %}
-    <div style="float: left;"><a href="/">Home</a></div>
+    <div style="float: left;"><button href="/" type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>Home</button></div>
     {% endif %}
     <div style="float: right;">
         {% if current_user.is_authenticated %}
-        <span>You are logged as {{ current_user.username }} | <a href="{{ url_for('security.logout') }}">Logout</a></span>
-        {% else %}
+        <span>You are logged as {{ current_user.username }}</span> | <button href="{{ url_for('security.logout') }}" type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-log-out"></span>Logout</button>
         <span> <a href="{{ url_for('security.login') }}">Login</a> |
             <a href="{{ url_for('security.register')
             }}">Register</a></span>
@@ -13,4 +12,3 @@
     </div>
     <div style="clear: both"></div>
 </div>
-

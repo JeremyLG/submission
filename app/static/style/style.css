@@ -12,22 +12,18 @@ body{
     padding-bottom: 3em;
 }
 
-#footer {
-    clear: both;
-    position: relative;
-    z-index: 10;
-    height: 3em;
-    margin-top: -3em;
-    float: right;
-}
-
 .footer {
-  position: relative;
-  margin-top: -150px; /* negative value of footer height */
-  height: 150px;
-  clear:both;
-  padding-top:20px;
+  bottom: 0;
+  position: absolute;
 }
+/*.footer {
+  clear: both;
+  position: relative;
+  z-index: 10;
+  height: 3em;
+  margin-top: -3em;
+  float: right;
+}*/
 
 section {
     padding: 1em;
