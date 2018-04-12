@@ -2,22 +2,22 @@
     {% if request.path != url_for('home') %}
     <div style="float: left;">
       <a href="/" role="button" class="btn btn-primary btn-lg">
-        <span class="glyphicon glyphicon-home"></span> Home
+        <span class="fas fa-home" aria-hidden="true"></span> Home
       </a>
     </div>
     {% endif %}
     <div style="float: right;">
         {% if current_user.is_authenticated %}
         Logged as {{ current_user.username }}
-        <a href="{{ url_for('security.logout') }}" role="button" class="btn btn-primary btn-lg">
-          <span class="fas fa-sign-in-alt"></span> Logout
+        <a href="{{ url_for('security.logout') }}" role="button" class="btn btn-outline-danger">
+          <span class="fas fa-sign-out-alt" aria-hidden="true"></span> Logout
         </a>
         {% else %}
         <a href="{{ url_for('security.login') }}" role="button" class="btn btn-outline-info">
-          <span class="fa-li"><i class="fas fa-sign-in-alt"></i></span> Login
+          <span class="fas fa-sign-in-alt" aria-hidden="true"></span> Login
         </a>
         <a href="{{ url_for('security.register')}}" role="button" class="btn btn-outline-info">
-          <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span> Register
+          <span class="fas fa-registered" aria-hidden="true"></span> Register
         </a>
         {% endif %}
     </div>
