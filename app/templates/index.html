@@ -8,18 +8,18 @@
     <div>
         {% if current_user.has_role('admin') %}
         <a href="/scores" role="button" class="btn btn-outline-primary">
-          <span class="glyphicon glyphicon-stats"></span> Scores
+          <span class="far fa-chart-bar" aria-hidden="true"></span> Scores
         </a>
         <a href="/admin" role="button" class="btn btn-outline-danger">
-          <span class="glyphicon glyphicon-user"></span> Admin
+          <span class="fas fa-user-secret" aria-hidden="true"></span> Admin
         </a>
         <!-- <a href="/scores">Scores</a> | <a href="/admin">Admin</a> -->
         {% else %}
         <a href="/submission" role="button" class="btn btn-outline-primary">
-          <span class="glyphicon glyphicon-signal"></span> Submit predictions
+          <span class="fas fa-chart-line" aria-hidden="true"></span> Submit predictions
         </a>
         <a href="/scores" role="button" class="btn btn-outline-danger">
-          <span class="glyphicon glyphicon-stats"></span> Scores
+          <span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Scores
         </a>
         <!-- <a href="/submission">Submit predictions</a> | <a href="/scores">Scores</a> -->
         {% endif %}
