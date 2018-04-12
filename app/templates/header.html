@@ -1,3 +1,4 @@
+<br/>
 <div id="header" style="margin-bottom=1em;">
     {% if request.path != url_for('home') %}
     <div style="float: left;">
@@ -8,7 +9,7 @@
     {% endif %}
     <div style="float: right;">
         {% if current_user.is_authenticated %}
-        Logged as {{ current_user.username }} <span class="fas fa-user-secret" aria-hidden="true"></span> 
+        Logged as {{ current_user.username }} <span class="fas fa-user-secret" aria-hidden="true"></span>
         <a href="{{ url_for('security.logout') }}" role="button" class="btn btn-outline-danger">
           <span class="fas fa-sign-out-alt" aria-hidden="true"></span> Logout
         </a>
