@@ -4,11 +4,10 @@
     {% endif %}
     <div style="float: right;">
         {% if current_user.is_authenticated %}
-        <span>You are logged as {{ current_user.username }} | <a href="{{ url_for('security.logout') }}" role="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-log-out"></span>Logout</a></span>
+        <span>Logged as {{ current_user.username }} <a href="{{ url_for('security.logout') }}" role="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-log-out"></span>Logout</a></span>
         {% else %}
-        <span> <a href="{{ url_for('security.login') }}">Login</a> |
-            <a href="{{ url_for('security.register')
-            }}">Register</a></span>
+        <span> <a href="{{ url_for('security.login') }}" role="button" class="btn btn-outline-info"><span class="glyphicon glyphicon-log-in"></span>Login</a>
+            <a href="{{ url_for('security.register')}}" role="button" class="btn btn-outline-info"><span class="glyphicon glyphicon-list-alt"></span>Register</a></span>
         {% endif %}
     </div>
     <div style="clear: both"></div>
