@@ -2,8 +2,8 @@
 
 {% block content %}
 <section id="home">
-    <img src="/static/images/LogoBAD.png" class="img-rounded" alt="Bob">
-    <div id="title">ESTIAM Data Science Challenge 2018</div>
+    <div id="title" style="text-align: center;">ESTIAM Data Science Challenge 2018</div>
+    <div id="images" style="text-align: center;"><img src="/static/images/LogoBAD.png" class="circle-img img-circle" alt="Bob"></div>
     {% if current_user.is_authenticated %}
     <div>
         {% if current_user.has_role('admin') %}
