@@ -1,13 +1,13 @@
 <div id="header" style="margin-bottom=1em;">
     {% if request.path != url_for('home') %}
-    <div style="float: left;"><span><a href="/" role="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>Home</a></span></div>
+    <div style="float: left;"><a href="/" role="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>Home</a></div>
     {% endif %}
     <div style="float: right;">
         {% if current_user.is_authenticated %}
-        Logged as {{ current_user.username }} <span><a href="{{ url_for('security.logout') }}" role="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-log-out"></span>Logout</a></span>
+        Logged as {{ current_user.username }} <a href="{{ url_for('security.logout') }}" role="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-log-out"></span>Logout</a>
         {% else %}
-        <span><a href="{{ url_for('security.login') }}" role="button" class="btn btn-outline-info"><span class="glyphicon glyphicon-log-in"></span>Login</a> |
-            <a href="{{ url_for('security.register')}}" role="button" class="btn btn-outline-info"><span class="glyphicon glyphicon-list-alt"></span>Register</a></span>
+        <a href="{{ url_for('security.login') }}" role="button" class="btn btn-outline-info"><span class="glyphicon glyphicon-log-in"></span>Login</a> 
+            <a href="{{ url_for('security.register')}}" role="button" class="btn btn-outline-info"><span class="glyphicon glyphicon-list-alt"></span>Register</a>
         {% endif %}
     </div>
     <div style="clear: both"></div>
