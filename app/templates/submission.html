@@ -26,6 +26,13 @@
     <div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
+    <script type="text/javascript">
+        function alertFilename()
+        {
+            var thefile = document.getElementById('file');
+            alert(thefile.value);
+        }
+    </script>
 </form>
 
 {% with messages = get_flashed_messages() %}
