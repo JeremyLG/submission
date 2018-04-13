@@ -90,7 +90,7 @@ function plot_data(json) {
 
     var chart = new google.visualization.LineChart(document.getElementById('result'));
 
-    chart.draw(data,  {showRowNumber: true, width: '100%', height: '100%',hAxis: { format:'yyyy MM-dd HH:mm',viewWindow: {min: new Date(2018, 1, 13),max: new Date(2018, 5, 18)}} });
+    chart.draw(data,  {showRowNumber: true, width: '100%', height: '100%',hAxis: { format:'yyyy MM-dd HH:mm',minValue: new Date(2018, 1, 13),maxValue: new Date(2018, 5, 18)} });
 
 }
 
