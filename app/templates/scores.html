@@ -84,13 +84,13 @@ function plot_data(json) {
     };
 
     var date_formatter = new google.visualization.DateFormat({
-            pattern: "EEE, MMM d, ''yy"
+            pattern: "M-d H:m"
     });
     date_formatter.format(data, 0);
 
     var chart = new google.visualization.LineChart(document.getElementById('result'));
 
-    chart.draw(data, options);
+    chart.draw(data,  {showRowNumber: true, width: '100%', height: '100%'});
 }
 
 
