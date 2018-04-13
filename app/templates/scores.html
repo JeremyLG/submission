@@ -60,7 +60,23 @@ function plot_data(json) {
             }
         },
         hAxis: {
-            format: 'MMM dd, yy'
+          viewWindow: {
+            min: new Date(2018, 04, 13, 18),
+            max: new Date(2018, 04, 18, 1)
+          },
+          gridlines: {
+            count: -1,
+            units: {
+              days: {format: ['MMM dd']},
+              hours: {format: ['HH:mm', 'ha']},
+            }
+          },
+          minorGridlines: {
+            units: {
+              hours: {format: ['hh:mm:ss a', 'ha']},
+              minutes: {format: ['HH:mm a Z', ':mm']}
+            }
+          }
         },
         pointSize: 5,
         tooltip: { isHtml: true },
