@@ -8,6 +8,17 @@ title { color: #ff4411; font-size: 48px; font-family: 'Signika', sans-serif; pad
 .social {
     float: right;
 }
+
+.uploadBox {
+ position: absolute;
+ background: lightblue;
+ width: 300px;
+ height: 200px;
+}
+.imageUploadInput {
+ display: none;
+}
+
 body{
     font-family: 'Lato', 'Helvetica',Sans-serif;
     padding-left: 1em;
