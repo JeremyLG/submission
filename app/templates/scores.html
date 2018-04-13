@@ -68,9 +68,9 @@ function plot_data(json) {
     };
 
     var date_formatter = new google.visualization.DateFormat({
-            pattern: "dd-MMM-yyyy"
+            pattern: "MMM dd, yyyy"
     });
-    date_formatter.format(data,0);
+    date_formatter.format(data, 0);
 
     var chart = new google.visualization.LineChart(document.getElementById('result'));
 
