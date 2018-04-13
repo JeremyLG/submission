@@ -56,7 +56,7 @@ function plot_data(json) {
             viewWindowMode:'explicit',
             viewWindow: {
                 max:0,
-                min:100
+                min:1
             }
         },
         hAxis: {
@@ -67,9 +67,9 @@ function plot_data(json) {
         explorer: {}
     };
 
-    var date_formatter = new google.visualization.DateFormat({ 
-            pattern: "MMM dd, yyyy"
-    }); 
+    var date_formatter = new google.visualization.DateFormat({
+            pattern: "MMM dd, yyyy HH:mm"
+    });
     date_formatter.format(data, 0);
 
     var chart = new google.visualization.LineChart(document.getElementById('result'));
@@ -83,4 +83,3 @@ function plot_data(json) {
       google.charts.load('current', {'packages':['corechart']});
       </script>
     {% endblock %}
-
