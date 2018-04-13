@@ -12,8 +12,8 @@
             {% endfor %}
         </select><br/>
         <div class="custom-file" style="width: 20%">
-          <input type="file" class="custom-file-input" name="file" id="customFile">
-          <label class="custom-file-label" for="customFile">Choose file</label>
+          <input type="file" class="custom-file-input" name="file" id="customFile" onchange="alertFilename()">
+          <label class="custom-file-label" for="customFile" onclick="alertFilename()">Choose file</label>
         </div>
         <!-- <input type=file name=file> -->
     </div>
