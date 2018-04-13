@@ -9,6 +9,21 @@
                                rel='stylesheet' type='text/css'>
                                <!-- jQuery library -->
         <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+        <script type="text/javacsript">
+           function readURL(fileName) {
+              if (fileName.files && fileName.files[0]) {
+                  var reader = new FileReader();
+
+                  reader.onload = function (e) {
+                      $('#viewImage')
+                              .attr('src', e.target.result)
+                              .width(150).height(200);
+                  };
+
+                  reader.readAsDataURL(fileName.files[0]);
+              }
+          }
+          </script>
         <title>{% block title %}ESTIAM Data Science Challenge 2018{% endblock %}</title>
         {% endblock %}
     </head>

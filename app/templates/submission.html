@@ -16,7 +16,7 @@
         <br/><br/>
         <div class="custom-file" style="width: 20%">
           <input type="file" class="custom-file-input" name="file" id="customFile" onchange="readURL(this);">
-          <label class="custom-file-label" for="customFile" onclick="alertFilename()" value="alert">Choose file</label>
+          <label class="custom-file-label" for="customFile" id="viewImage">Choose file</label>
         </div>
         <!-- <input type=file name=file> -->
     </div>
@@ -29,21 +29,6 @@
     <div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
-    <script type="text/javacsript">
-       function readURL(fileName) {
-          if (fileName.files && fileName.files[0]) {
-              var reader = new FileReader();
-
-              reader.onload = function (e) {
-                  $('#viewImage')
-                          .attr('src', e.target.result)
-                          .width(150).height(200);
-              };
-
-              reader.readAsDataURL(fileName.files[0]);
-          }
-      }
-</script>
 </form>
 
 {% with messages = get_flashed_messages() %}
