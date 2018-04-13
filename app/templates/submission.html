@@ -11,7 +11,11 @@
             <option value="{{ c.id }}">{{ c.name }}</option>
             {% endfor %}
         </select>
-        <input type=file name=file>
+        <label class="custom-file">
+          <input type="file" id="file" class="custom-file-input">
+          <span class="custom-file-control"></span>
+        </label>
+        <!-- <input type=file name=file> -->
     </div>
     <div class="fieldtext">Public comment:</div>
     <div class="fieldvalue">
@@ -20,7 +24,7 @@
                                maxlength=500 rows=10 cols=40></textarea>
     </div>
     <div>
-        <input type=submit value="Submit">
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
 
@@ -35,4 +39,3 @@
 {% endwith %}
 
 {% endblock %}
-
