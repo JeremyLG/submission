@@ -56,15 +56,17 @@ function plot_data(json) {
             viewWindowMode:'explicit',
             viewWindow: {
                 max:0,
-                min:1
+                min:100
             }
         },
         showRowNumber: true,
         width: '100%',
         height: '100%',
         hAxis: {
-          minValue: new Date(2018, 1, 13),
-          maxValue: new Date(2018, 5, 18)
+          viewWindow: {
+            max: new Date(2018, 1, 13),
+            min: new Date(2018, 5, 18)
+          }
         }
         // hAxis: {
         //   viewWindow: {
