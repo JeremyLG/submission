@@ -40,7 +40,7 @@ def upload_file():
         if request.method == 'POST':
 
             competition_id = request.form.get('competitions')
-            if competition_id == None:
+            if competition_id is None:
                 flash('No competition selected')
                 return redirect(request.url)
 
