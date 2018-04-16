@@ -182,6 +182,7 @@ def plot_confusion_matrix():
                  horizontalalignment="center",
                  color="white" if cm[i, j] > thresh else "black")
 
+    img = io.BytesIO()
     plt.tight_layout()
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
