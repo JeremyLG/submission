@@ -16,6 +16,8 @@ from sqlalchemy import Date, cast
 
 import numpy as np
 from sklearn.metrics import roc_auc_score, accuracy_score
+import matplotlib.pyplot as plt
+import base64
 
 from app import app, security, db
 from models import User, Competition, Submission
@@ -87,7 +89,8 @@ def upload_file():
         flash(str(e))
         return redirect(request.url)
 
-#@login_required
+
+# @login_required
 def get_scores(filename, competition_id):
     "Returns (preview_score, score)"
 
@@ -113,11 +116,13 @@ def get_scores(filename, competition_id):
 
     return (score_p, score_f)
 
+
 @app.route('/scores', methods=['GET', 'POST'])
 @login_required
 def scores():
     competitions = Competition.query.all()
     return render_template('scores.html', competitions=competitions)
+
 
 @app.route('/plot')
 def build_plot():
@@ -201,6 +206,7 @@ class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
         return login.current_user.has_role('admin')
 
+
 class AdminModelView(ModelView):
 
     can_set_page_size = True
@@ -212,6 +218,7 @@ class AdminModelView(ModelView):
 #    def inaccessible_callback(self, name, **kwargs):
 #        # redirect to login page if user doesn't have access
 #        return redirect(url_for('security.login', next=request.url))
+
 
 class UserAdmin(ModelView):
 
@@ -283,6 +290,7 @@ def get_groundtruth(filename):
     else:
         abort(403)
 
+
 @login_required
 @app.route('/submissions/<filename>')
 def get_submission(filename):
@@ -290,14 +298,16 @@ def get_submission(filename):
     submissions = Submission.query.filter_by(filename=filename)
 
     # make sure the current user is whether admin or the user who actually submitted the file
-    if ( submissions.count() > 0 and (login.current_user.has_role('admin') or login.current_user.id == submissions.first().user_id)):
+    if (submissions.count() > 0 and (login.current_user.has_role('admin') or login.current_user.id == submissions.first().user_id)):
         return send_from_directory(app.config['UPLOAD_FOLDER'],
                                    filename)
     else:
         abort(403)
 
+
 class Error(Exception):
     pass
+
 
 class ParsingError(Error):
     pass
