@@ -137,7 +137,6 @@ def scores():
 
 # @app.route("/plots")
 def plot_confusion_matrix(user_id):
-    print("USER_ID : " + str(user_id))
     cmap = plt.cm.Blues
     normalize = False
     title = 'Confusion matrix'
@@ -152,18 +151,12 @@ def plot_confusion_matrix(user_id):
     # username = ""
     score = 0
     filepath = ""
-    print("COMPETITION_ID : " + str(competition_id))
     # for u in users:
     #     if u.user_id == user_id:
     #         username = u.username
     submissions = Submission.query.all()
-    i = 0
     for s in submissions:
-        i += 1
-        print(i)
-        print(str(s.user_id) == str(user_id))
-        print(s.user_id is user_id)
-        if s.user_id == user_id and s.competition_id == competition_id:
+        if str(s.user_id) == str(user_id) and s.competition_id == competition_id:
             print("SCORE : " + s.score)
             if s.score > score:
                 filepath = os.path.join(
