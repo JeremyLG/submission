@@ -14,6 +14,7 @@ from flask_login import login_required
 from wtforms.fields import PasswordField
 from sqlalchemy import Date, cast
 
+import itertools
 import numpy as np
 from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
