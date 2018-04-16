@@ -99,21 +99,31 @@ def get_scores(filename, competition_id):
 
     # parse files
     # filename = "C:\\Users\\jerem\\Documents\\ESTIAM\\UE Datascience\\test_only_labels.csv"
-    predictions = np.fromregex(filename, regex, [('id', np.int64), ('v0', 'S128')])
-    groundtruth_filename = os.path.join(app.config['GROUNDTRUTH_FOLDER'], Competition.query.get(competition_id).groundtruth)
-    groundtruth = np.fromregex(groundtruth_filename, regex, [('id', np.int64), ('v0', 'S128')])
+    predictions = np.fromregex(filename, regex, [('id', np.int64),
+                                                 ('v0', 'S128')])
+    groundtruth_filename = os.path.join(
+            app.config['GROUNDTRUTH_FOLDER'],
+            Competition.query.get(competition_id).groundtruth)
+    groundtruth = np.fromregex(
+            groundtruth_filename,
+            regex,
+            [('id', np.int64), ('v0', 'S128')])
 
     # sort data
     predictions.sort(order='id')
     groundtruth.sort(order='id')
 
-    if predictions['id'].size == 0 or not np.array_equal(predictions['id'], groundtruth['id']):
-        raise ParsingError("Error parsing the submission file. Make sure it has the right format and contains the right ids.")
+    if predictions['id'].size == 0 or not np.array_equal(predictions['id'],
+                                                         groundtruth['id']):
+        raise ParsingError("Error parsing the submission file. Make sure it" +
+                           "has the right format and contains the right ids.")
 
     # partition the data indices into two sets and evaluate separately
     splitpoint = int(np.round(len(groundtruth) * 0.15))
-    score_p = accuracy_score(groundtruth['v0'][:splitpoint], predictions['v0'][:splitpoint])
-    score_f = accuracy_score(groundtruth['v0'][splitpoint:], predictions['v0'][splitpoint:])
+    score_p = accuracy_score(groundtruth['v0'][:splitpoint],
+                             predictions['v0'][:splitpoint])
+    score_f = accuracy_score(groundtruth['v0'][splitpoint:],
+                             predictions['v0'][splitpoint:])
 
     return (score_p, score_f)
 
@@ -126,7 +136,7 @@ def scores():
 
 
 # @app.route("/plots")
-def plot_confusion_matrix(username):
+def plot_confusion_matrix(user_id):
     cmap = plt.cm.Blues
     normalize = False
     title = 'Confusion matrix'
@@ -137,25 +147,34 @@ def plot_confusion_matrix(username):
     for c in competitions:
         if c.name == "ESTIAM 2018":
             competition_id = c.id
-    users = User.query.all()
-    user_id = 0
+    # users = User.query.all()
+    # username = ""
     score = 0
     filepath = ""
-    for u in users:
-        if u.username == username:
-            user_id = u.id
+    # for u in users:
+    #     if u.user_id == user_id:
+    #         username = u.username
     submissions = Submission.query.all()
     for s in submissions:
         if s.user_id == user_id and s.competition_id == competition_id:
             if s.score > score:
-                filepath = os.path.join("/home/ubuntu/submission/app/files/upload/", s.filename)
+                filepath = os.path.join(
+                        "/home/ubuntu/submission/app/files/upload/",
+                        s.filename)
                 score = s.score
 
     # parse files
-    # filename = "C:\\Users\\jerem\\Documents\\ESTIAM\\UE Datascience\\test_only_labels.csv"
-    predictions = np.fromregex(filepath, regex, [('id', np.int64), ('v0', 'S128')])
-    groundtruth_filename = os.path.join("/home/ubuntu/submission/app/files/groundtruth/", Competition.query.get(competition_id).groundtruth)
-    groundtruth = np.fromregex(groundtruth_filename, regex, [('id', np.int64), ('v0', 'S128')])
+    # filename = "C:\\Users\\jerem\\Documents\\ESTIAM\\UE Datascience" +
+    # "\\test_only_labels.csv"
+    predictions = np.fromregex(filepath, regex, [('id', np.int64),
+                                                 ('v0', 'S128')])
+    groundtruth_filename = os.path.join(
+            "/home/ubuntu/submission/app/files/groundtruth/",
+            Competition.query.get(competition_id).groundtruth)
+    groundtruth = np.fromregex(
+            groundtruth_filename,
+            regex,
+            [('id', np.int64), ('v0', 'S128')])
     cm = confusion_matrix(groundtruth['v0'], predictions['v0'])
     """
     This function prints and plots the confusion matrix.
