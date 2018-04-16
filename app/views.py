@@ -124,6 +124,74 @@ def scores():
     return render_template('scores.html', competitions=competitions)
 
 
+@app.route("/plots")
+def plot_confusion_matrix():
+    cmap = plt.cm.Blues
+    normalize = False
+    title = 'Confusion matrix'
+    regex = r'(\d+),(.+)'
+    competition_id = 0
+    classes = ["functional", "non functional", "functional needs repair"]
+    competitions = Competition.query.all()
+    for c in competitions:
+        if c.name == "ESTIAM 2018":
+            competition_id = c.id
+    username = "Benoit - Lorraine - Tristan"
+    users = User.query.all()
+    user_id = 0
+    score = 0
+    filepath = ""
+    for u in users:
+        if u.username == username:
+            user_id = u.id
+    submissions = Submission.query.all()
+    for s in submissions:
+        if s.user_id == user_id and s.competition_id == competition_id:
+            if s.score > score:
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], s.filename)
+                score = s.score
+
+    # parse files
+    # filename = "C:\\Users\\jerem\\Documents\\ESTIAM\\UE Datascience\\test_only_labels.csv"
+    predictions = np.fromregex(filepath, regex, [('id', np.int64), ('v0', 'S128')])
+    groundtruth_filename = os.path.join(app.config['GROUNDTRUTH_FOLDER'], Competition.query.get(competition_id).groundtruth)
+    groundtruth = np.fromregex(groundtruth_filename, regex, [('id', np.int64), ('v0', 'S128')])
+    cm = confusion_matrix(groundtruth['v0'], predictions['v0'])
+    """
+    This function prints and plots the confusion matrix.
+    Normalization can be applied by setting `normalize=True`.
+    """
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        print("Normalized confusion matrix")
+    else:
+        print('Confusion matrix, without normalization')
+
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], fmt),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.savefig(img, format='png')
+    img.seek(0)
+
+    plot_url = base64.b64encode(img.getvalue()).decode()
+
+    return '<img src="data:image/png;base64,{}">'.format(plot_url)
+
+
 @app.route('/plot')
 def build_plot():
 
