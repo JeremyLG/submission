@@ -163,6 +163,8 @@ def plot_confusion_matrix(user_id):
         print(i)
         print("S_USER_id : " + str(s.user_id) + " | COMPETITION_ID : " +
               str(s.competition_id))
+        print(str(user_id)+str(s.user_id)+"HA" + " | " + str(competition_id) +
+              str(s.competition_id) + "HO")
         if s.user_id == user_id and s.competition_id == competition_id:
             print("SCORE : " + s.score)
             if s.score > score:
