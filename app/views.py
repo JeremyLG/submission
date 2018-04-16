@@ -58,9 +58,9 @@ def upload_file():
                 return redirect(request.url)
 
             # check if the user has made submissions in the past 24h
-            # if Submission.query.filter_by(user_id=user_id).filter_by(competition_id=competition_id).filter(Submission.submitted_on>now-timedelta(hours=23)).count() > 0:
-            #     flash("You already did a submission in the past 24h.")
-            #     return redirect(request.url)
+            if Submission.query.filter_by(user_id=user_id).filter_by(competition_id=competition_id).filter(Submission.submitted_on>now-timedelta(hours=23)).count() > 0:
+                flash("You already did a submission in the past 24h.")
+                return redirect(request.url)
 
             if file:
 
