@@ -224,8 +224,10 @@ def plots():
 def get_users():
     if request.method == 'POST':
         user_id = request.form.get('users')
+        print(user_id)
         # submissions = Submission.query.filter(Submission.competition_id==competition_id)
         s = plot_confusion_matrix(user_id)
+        print(s)
         return jsonify({"count": 1, "s": s})
 
 
