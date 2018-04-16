@@ -154,7 +154,7 @@ def plot_confusion_matrix():
     # parse files
     # filename = "C:\\Users\\jerem\\Documents\\ESTIAM\\UE Datascience\\test_only_labels.csv"
     predictions = np.fromregex(filepath, regex, [('id', np.int64), ('v0', 'S128')])
-    groundtruth_filename = os.path.join("/home/ubuntu/submission/app/files/upload/", Competition.query.get(competition_id).groundtruth)
+    groundtruth_filename = os.path.join("/home/ubuntu/submission/app/files/groundtruth/", Competition.query.get(competition_id).groundtruth)
     groundtruth = np.fromregex(groundtruth_filename, regex, [('id', np.int64), ('v0', 'S128')])
     cm = confusion_matrix(groundtruth['v0'], predictions['v0'])
     """
