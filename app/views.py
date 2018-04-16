@@ -151,6 +151,7 @@ def plot_confusion_matrix(user_id):
     # username = ""
     score = 0
     filepath = ""
+    print("COMPETITION_ID : " + competition_id)
     # for u in users:
     #     if u.user_id == user_id:
     #         username = u.username
@@ -163,6 +164,8 @@ def plot_confusion_matrix(user_id):
                         s.filename)
                 score = s.score
 
+    print("SCORE : " + score)
+    print("FILEPATH : " + filepath)
     # parse files
     # filename = "C:\\Users\\jerem\\Documents\\ESTIAM\\UE Datascience" +
     # "\\test_only_labels.csv"
@@ -209,6 +212,8 @@ def plot_confusion_matrix(user_id):
 
     plot_url = base64.b64encode(img.getvalue()).decode()
 
+    print("PLOT_URL : " + plot_url)
+    
     return '<img src="data:image/png;base64,{}">'.format(plot_url)
 
 
@@ -224,10 +229,8 @@ def plots():
 def get_users():
     if request.method == 'POST':
         user_id = request.form.get('users')
-        print(user_id)
         # submissions = Submission.query.filter(Submission.competition_id==competition_id)
         s = plot_confusion_matrix(user_id)
-        print(s)
         return jsonify({"count": 1, "s": s})
 
 
