@@ -151,7 +151,7 @@ def plot_confusion_matrix(user_id):
     # username = ""
     score = 0
     filepath = ""
-    print("COMPETITION_ID : " + competition_id)
+    print("COMPETITION_ID : " + str(competition_id))
     # for u in users:
     #     if u.user_id == user_id:
     #         username = u.username
@@ -164,7 +164,7 @@ def plot_confusion_matrix(user_id):
                         s.filename)
                 score = s.score
 
-    print("SCORE : " + score)
+    print("SCORE : " + str(score))
     print("FILEPATH : " + filepath)
     # parse files
     # filename = "C:\\Users\\jerem\\Documents\\ESTIAM\\UE Datascience" +
@@ -213,7 +213,7 @@ def plot_confusion_matrix(user_id):
     plot_url = base64.b64encode(img.getvalue()).decode()
 
     print("PLOT_URL : " + plot_url)
-    
+
     return '<img src="data:image/png;base64,{}">'.format(plot_url)
 
 
