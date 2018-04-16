@@ -148,7 +148,7 @@ def get_submissions():
                     score = s.first().preview_score * 100
                     row += ',{{"v":{:.2f}}}'.format(score)
                     row += ',{{"v":"<div style=\\"padding:5px\\"><b>Date</b>: {}<br><b>Username</b>: {}<br><b>Score</b>: {:.2f}<br><b>Comment</b>: {}</div>"}}'.format(
-                                s.first().submitted_on.strftime("%b %d, %Y"),
+                                s.first().submitted_on,
                                 User.query.get(u).username,
                                 score,
                                 s.first().comment)
