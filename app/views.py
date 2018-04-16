@@ -160,8 +160,11 @@ def plot_confusion_matrix(user_id):
     i = 0
     for s in submissions:
         i += 1
+        print(i)
+        print("S_USER_id : " + s.user_id + " | COMPETITION_ID : " +
+              s.competition_id)
         if s.user_id == user_id and s.competition_id == competition_id:
-            print(str(i) + "_SCORE : " + s.score)
+            print("SCORE : " + s.score)
             if s.score > score:
                 filepath = os.path.join(
                         "/home/ubuntu/submission/app/files/upload/",
