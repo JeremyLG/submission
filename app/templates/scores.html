@@ -64,8 +64,8 @@ function plot_data(json) {
         height: '100%',
         hAxis: {
           viewWindow: {
-            min: new Date(2018, 3, 12,19),
-            max: new Date(2018, 3, 18,18)
+            min: new Date(2018, 3, 12,19,0,0),
+            max: new Date(2018, 3, 18,18,0,0)
           },
           gridlines: {
             count: -1,
@@ -86,10 +86,10 @@ function plot_data(json) {
         explorer: {}
     };
 
-    var date_formatter = new google.visualization.DateFormat({
-            pattern: "yyyy-MM-dd HH:mm:ss"
-    });
-    date_formatter.format(data, 0);
+    // var date_formatter = new google.visualization.DateFormat({
+    //         pattern: "yyyy-MM-dd HH:mm:ss"
+    // });
+    // date_formatter.format(data, 0);
 
     var chart = new google.visualization.LineChart(document.getElementById('result'));
 
