@@ -141,7 +141,7 @@ def get_submissions():
 
         rows = ""
         for d in dates:
-            row = '{{"c":[{{"v":"Date({0},{1},{2})"}}'.format(d.year, d.month - 1, d.day)#, d.hour, d.minute)
+            row = '{{"c":[{{"v":"Date({0},{1},{2})"}}'.format(d.year, d.month, d.day)#, d.hour, d.minute)
             for u in user_ids:
                 s = submissions.filter(Submission.submitted_on==d).filter(Submission.user_id==u)
                 if s.count() > 0:
