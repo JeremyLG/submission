@@ -137,11 +137,11 @@ def get_submissions():
 
         # get all users
         user_ids = sorted(list({s.user_id for s in submissions}))
-        dates = sorted(list({s.submitted_on.datetime() for s in submissions}))
+        dates = sorted(list({s.submitted_on for s in submissions}))
 
         rows = ""
         for d in dates:
-            row = '{{"c":[{{"v":"Date({0},{1},{2})"}}'.format(d.year, d.month - 1, d.day)
+            row = '{{"c":[{{"v":"Date({0},{1},{2},{3})"}}'.format(d.year, d.month - 1, d.day,d.hour)
             for u in user_ids:
                 s = submissions.filter(cast(Submission.submitted_on, Date)==d).filter(Submission.user_id==u)
                 if s.count() > 0:
