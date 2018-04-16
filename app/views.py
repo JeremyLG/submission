@@ -195,7 +195,7 @@ def plot_confusion_matrix(username):
 
 @app.route('/plots', methods=['GET', 'POST'])
 @login_required
-def scores():
+def plots():
     users = User.query.all()
     return render_template('plots.html', users=users)
 
