@@ -137,7 +137,7 @@ def get_submissions():
 
         # get all users
         user_ids = sorted(list({s.user_id for s in submissions}))
-        dates = sorted(list({s.submitted_on.date() for s in submissions}))
+        dates = sorted(list({s.submitted_on.datetime() for s in submissions}))
 
         rows = ""
         for d in dates:
