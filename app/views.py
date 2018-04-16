@@ -141,9 +141,9 @@ def get_submissions():
 
         rows = ""
         for d in dates:
-            row = '{{"c":[{{"v":"Date({0},{1},{2},{3})"}}'.format(d.year, d.month - 1, d.day,d.hour)
+            row = '{{"c":[{{"v":"Date({0},{1},{2},{3},{4})"}}'.format(d.year, d.month - 1, d.day, d.hour, d.minute)
             for u in user_ids:
-                s = submissions.filter(cast(Submission.submitted_on, Date)==d).filter(Submission.user_id==u)
+                s = submissions.filter(Submission.submitted_on==d).filter(Submission.user_id==u)
                 if s.count() > 0:
                     score = s.first().preview_score * 100
                     row += ',{{"v":{:.2f}}}'.format(score)
