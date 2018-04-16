@@ -212,7 +212,7 @@ def plot_confusion_matrix(user_id):
     plot_url = base64.b64encode(img.getvalue()).decode()
 
     print("PLOT_URL : " + plot_url)
-
+    plt.close()
     return '<img src="data:image/png;base64,{}">'.format(plot_url)
 
 
