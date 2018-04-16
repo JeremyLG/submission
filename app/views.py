@@ -125,8 +125,8 @@ def scores():
     return render_template('scores.html', competitions=competitions)
 
 
-@app.route("/plots")
-def plot_confusion_matrix():
+# @app.route("/plots")
+def plot_confusion_matrix(username):
     cmap = plt.cm.Blues
     normalize = False
     title = 'Confusion matrix'
@@ -137,7 +137,6 @@ def plot_confusion_matrix():
     for c in competitions:
         if c.name == "ESTIAM 2018":
             competition_id = c.id
-    username = "Benoit - Lorraine - Tristan"
     users = User.query.all()
     user_id = 0
     score = 0
@@ -194,20 +193,21 @@ def plot_confusion_matrix():
     return '<img src="data:image/png;base64,{}">'.format(plot_url)
 
 
-@app.route('/plot')
-def build_plot():
+@app.route('/plots', methods=['GET', 'POST'])
+@login_required
+def scores():
+    users = User.query.all()
+    return render_template('plots.html', users=users)
 
-    img = io.BytesIO()
 
-    y = [1,2,3,4,5]
-    x = [0,2,1,3,4]
-    plt.plot(x,y)
-    plt.savefig(img, format='png')
-    img.seek(0)
-
-    plot_url = base64.b64encode(img.getvalue()).decode()
-
-    return '<img src="data:image/png;base64,{}">'.format(plot_url)
+@app.route('/_get_datas', methods=['POST'])
+@login_required
+def get_users():
+    if request.method == 'POST':
+        user_id = request.form.get('users')
+        # submissions = Submission.query.filter(Submission.competition_id==competition_id)
+        s = plot_confusion_matrix(user_id)
+        return jsonify({"count": 1, "s": s})
 
 
 @app.route('/_get_submissions', methods=['POST'])
