@@ -137,6 +137,7 @@ def scores():
 
 # @app.route("/plots")
 def plot_confusion_matrix(user_id):
+    print("USER_ID : " + str(user_id))
     cmap = plt.cm.Blues
     normalize = False
     title = 'Confusion matrix'
@@ -156,8 +157,11 @@ def plot_confusion_matrix(user_id):
     #     if u.user_id == user_id:
     #         username = u.username
     submissions = Submission.query.all()
+    i = 0
     for s in submissions:
+        i += 1
         if s.user_id == user_id and s.competition_id == competition_id:
+            print(str(i) + "_SCORE : " + s.score)
             if s.score > score:
                 filepath = os.path.join(
                         "/home/ubuntu/submission/app/files/upload/",
