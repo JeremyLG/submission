@@ -15,7 +15,7 @@ from wtforms.fields import PasswordField
 from sqlalchemy import Date, cast
 
 import numpy as np
-from sklearn.metrics import roc_auc_score, accuracy_score
+from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
 import base64
 
