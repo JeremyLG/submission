@@ -58,9 +58,9 @@ def upload_file():
                 return redirect(request.url)
 
             # check if the user has made submissions in the past 24h
-            # if Submission.query.filter_by(user_id=user_id).filter_by(competition_id=competition_id).filter(Submission.submitted_on>now-timedelta(hours=23)).count() > 0:
-            #     flash("You already did a submission in the past 24h.")
-            #     return redirect(request.url)
+            if Submission.query.filter_by(user_id=user_id).filter_by(competition_id=competition_id).filter(Submission.submitted_on>now-timedelta(hours=23)).count() > 0:
+                flash("You already did a submission in the past 24h.")
+                return redirect(request.url)
 
             if file:
 
@@ -137,18 +137,18 @@ def get_submissions():
 
         # get all users
         user_ids = sorted(list({s.user_id for s in submissions}))
-        dates = sorted(list({s.submitted_on.date() for s in submissions}))
+        dates = sorted(list({s.submitted_on for s in submissions}))
 
         rows = ""
         for d in dates:
-            row = '{{"c":[{{"v":"Date({0},{1},{2})"}}'.format(d.year, d.month, d.day)
+            row = '{{"c":[{{"v":"Date({0},{1},{2},{3},{4},{5})"}}'.format(d.year, d.month - 1, d.day, d.hour, d.minute, d.second)
             for u in user_ids:
-                s = submissions.filter(cast(Submission.submitted_on, Date)==d).filter(Submission.user_id==u)
+                s = submissions.filter(Submission.submitted_on==d).filter(Submission.user_id==u)
                 if s.count() > 0:
                     score = s.first().preview_score * 100
                     row += ',{{"v":{:.2f}}}'.format(score)
                     row += ',{{"v":"<div style=\\"padding:5px\\"><b>Date</b>: {}<br><b>Username</b>: {}<br><b>Score</b>: {:.2f}<br><b>Comment</b>: {}</div>"}}'.format(
-                                s.first().submitted_on.strftime("%b %d, %Y"),
+                                s.first().submitted_on,
                                 User.query.get(u).username,
                                 score,
                                 s.first().comment)

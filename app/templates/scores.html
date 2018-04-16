@@ -63,40 +63,34 @@ function plot_data(json) {
         width: '100%',
         height: '100%',
         hAxis: {
-          format: "dd MMM yyyy HH:mm",
           viewWindow: {
-            max: new Date(2018, 4, 12),
-            min: new Date(2018, 4, 19)
+            min: new Date(2018, 3, 12,19,0,0),
+            max: new Date(2018, 3, 18,18,0,0)
+          },
+          gridlines: {
+            count: -1,
+            units: {
+              days: {format: ['MMM dd']},
+              hours: {format: ['HH:mm', 'ha']},
+            }
+          },
+          minorGridlines: {
+            units: {
+              hours: {format: ['hh:mm:ss a', 'ha']},
+              minutes: {format: ['HH:mm a Z', ':mm']}
+            }
           }
         },
-        // hAxis: {
-        //   viewWindow: {
-        //     min: new Date(2018, 4, 13, 9),
-        //     max: new Date(2018, 4, 18, 19)
-        //   },
-        //   gridlines: {
-        //     count: -1,
-        //     units: {
-        //       days: {format: ['MMM dd']},
-        //       hours: {format: ['HH:mm', 'ha']},
-        //     }
-        //   },
-        //   minorGridlines: {
-        //     units: {
-        //       hours: {format: ['hh:mm:ss a', 'ha']},
-        //       minutes: {format: ['HH:mm a Z', ':mm']}
-        //     }
-        //   }
-        // },
         pointSize: 5,
         tooltip: { isHtml: true },
         explorer: {}
     };
 
-    var date_formatter = new google.visualization.DateFormat({
-            pattern: "EEE, MMM d, ''yy, HH:mm"
-    });
-    date_formatter.format(data, 0);
+    // var date_formatter = new google.visualization.DateFormat({
+    //         pattern: "yyyy-MM-dd HH:mm:ss"
+    // });
+    // date_formatter.format(data, 0);
+
 
     var chart = new google.visualization.LineChart(document.getElementById('result'));
 
