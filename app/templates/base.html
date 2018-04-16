@@ -1,36 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head lang="en">
-    <meta charset="UTF-8">
-    <title>Flask React</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- styles -->
-  </head>
-  <body>
-    <div class="container">
-      <h1>Flask React</h1>
-      <br>
-      <div id="content"></div>
-    </div>
-    <!-- scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
-    <script type="text/jsx">
+    <head>
+        {% block head %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='style/favicon.ico') }}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,700'
+                               rel='stylesheet' type='text/css'>
+                               <!-- jQuery library -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+        <script type="text/javacsript">
+           function readURL(fileName) {
+              if (fileName.files && fileName.files[0]) {
+                  var reader = new FileReader();
 
-      /*** @jsx React.DOM */
+                  reader.onload = function (e) {
+                      $('#viewImage')
+                              .attr('src', e.target.result)
+                              .width(150).height(200);
+                  };
 
-      var realPython = React.createClass({
-        render: function() {
-          return (<h2>Greetings, from Real Python!</h2>);
-        }
-      });
+                  reader.readAsDataURL(fileName.files[0]);
+              }
+          }
+          </script>
+        <title>{% block title %}ESTIAM Data Science Challenge 2018{% endblock %}</title>
+        {% endblock %}
+    </head>
 
-      ReactDOM.render(
-        React.createElement(realPython, null),
-        document.getElementById('content')
-      );
+    <body>
 
-    </script>
-  </body>
+            <div id="container">
+
+                {% include 'header.html' %}
+
+                <div id="content">{% block content %}{% endblock %}</div>
+
+            </div>
+            <div class="container footer navbar-fixed-bottom">
+              <footer>
+                {% block footer %}
+                <h3 class="copyright">
+                  ESTIAM - <script>document.write(new Date().getFullYear())</script>
+                </h3>
+                <h3 class="social">
+                  <span class="fab fa-angellist" aria-hidden="true"></span>Credits at julj
+                </h3>
+                <div style="clear: both"></div>
+                {% endblock %}
+              </footer>
+            </div>
+    </body>
+{% block scripts %}{% endblock %}
 </html>
