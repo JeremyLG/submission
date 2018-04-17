@@ -172,6 +172,8 @@ def get_submissions():
                 ','.join('{{"id":"","label":"{}","pattern":"","type":"number"}},{{"id":"","label":"Comment","pattern":"","type":"string","role":"tooltip","p":{{"html":true}}}}'.format(User.query.get(u).username) for u in user_ids),
                 rows
                 )
+        print(s)
+        print(count)
         print(jsonify({"count": count, "s": s}))
         return jsonify({"count": count, "s": s})
 
