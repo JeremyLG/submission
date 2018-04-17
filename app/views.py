@@ -158,7 +158,7 @@ def get_submissions():
 
             row += "]},"
             rows += row
-
+        print(rows)
 
         s = """
         {{
