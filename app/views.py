@@ -150,7 +150,7 @@ def plot_confusion_matrix(user_id):
             competition_id = c.id
     # users = User.query.all()
     # username = ""
-    score = 0
+    score = 100
     filepath = ""
     # for u in users:
     #     if u.user_id == user_id:
@@ -158,7 +158,7 @@ def plot_confusion_matrix(user_id):
     submissions = Submission.query.all()
     for s in submissions:
         if str(s.user_id) == str(user_id) and s.competition_id == competition_id:
-            if s.score > score:
+            if s.score < score:
                 filepath = os.path.join(
                         "/home/ubuntu/submission/app/files/upload/",
                         s.filename)
