@@ -143,7 +143,7 @@ def plot_confusion_matrix(user_id):
     title = 'Confusion matrix'
     regex = r'(\d+),(.+)'
     competition_id = 0
-    classes = ["functional", "non functional", "functional needs repair"]
+    classes = ["functional",  "functional needs repair", "non functional"]
     competitions = Competition.query.all()
     for c in competitions:
         if c.name == "ESTIAM 2018":
