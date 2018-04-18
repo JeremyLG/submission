@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<title>Matrice de confusion</title>
+<h1>Matrice de confusion</h1>
+<form action="" method=post enctype=multipart/form-data>
+  <select name="users">
+    {% for c in users %}
+    <option value="{{ c.id }}">{{ c.username }}</option>
+    {% endfor %}
+  </select>
+  <br />
+  <input type=submit id="submit" value="View confusion matrix">
+</form>
+<section id="plot">
+  <div id="result" style="width: 900px; height: 500px"/>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- jQuery from Google -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(function() {
+  $('#submit').click(function() {
+    $.ajax({
+      url: '/_get_datas',
+      data: $('form').serialize(),
+      type: 'POST',
+      success: function(response) {
+        $("#result").html(response.s);
+      },
+      error: function(error) {
+        $("#result").html("Unknown error");
+      }
+    });
+    return false;
+  });
+});
+</script>
+{% endblock %}

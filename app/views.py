@@ -14,8 +14,11 @@ from flask_login import login_required
 from wtforms.fields import PasswordField
 from sqlalchemy import Date, cast
 
+import itertools
 import numpy as np
-from sklearn.metrics import roc_auc_score, accuracy_score
+from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix
+import matplotlib.pyplot as plt
+import base64
 
 from app import app, security, db
 from models import User, Competition, Submission
@@ -58,8 +61,9 @@ def upload_file():
                 return redirect(request.url)
 
             # check if the user has made submissions in the past 24h
-            if Submission.query.filter_by(user_id=user_id).filter_by(competition_id=competition_id).filter(Submission.submitted_on>now-timedelta(minutes=5)).count() > 0:
-                flash("Tu as déjà fait une soumission il y a moins de 5 minutes")
+            if Submission.query.filter_by(user_id=user_id).filter_by(competition_id=competition_id).filter(Submission.submitted_on>now-timedelta(minutes=30)).count() > 0:
+
+                flash("Tu as déjà fait une soumission il y a moins de 30 minutes")
                 return redirect(request.url)
 
             if file:
@@ -87,7 +91,8 @@ def upload_file():
         flash(str(e))
         return redirect(request.url)
 
-#@login_required
+
+# @login_required
 def get_scores(filename, competition_id):
     "Returns (preview_score, score)"
 
@@ -95,29 +100,139 @@ def get_scores(filename, competition_id):
 
     # parse files
     # filename = "C:\\Users\\jerem\\Documents\\ESTIAM\\UE Datascience\\test_only_labels.csv"
-    predictions = np.fromregex(filename, regex, [('id', np.int64), ('v0', 'S128')])
-    groundtruth_filename = os.path.join(app.config['GROUNDTRUTH_FOLDER'], Competition.query.get(competition_id).groundtruth)
-    groundtruth = np.fromregex(groundtruth_filename, regex, [('id', np.int64), ('v0', 'S128')])
+    predictions = np.fromregex(filename, regex, [('id', np.int64),
+                                                 ('v0', 'S128')])
+    groundtruth_filename = os.path.join(
+            app.config['GROUNDTRUTH_FOLDER'],
+            Competition.query.get(competition_id).groundtruth)
+    groundtruth = np.fromregex(
+            groundtruth_filename,
+            regex,
+            [('id', np.int64), ('v0', 'S128')])
 
     # sort data
     predictions.sort(order='id')
     groundtruth.sort(order='id')
 
-    if predictions['id'].size == 0 or not np.array_equal(predictions['id'], groundtruth['id']):
-        raise ParsingError("Error parsing the submission file. Make sure it has the right format and contains the right ids.")
+    if predictions['id'].size == 0 or not np.array_equal(predictions['id'],
+                                                         groundtruth['id']):
+        raise ParsingError("Error parsing the submission file. Make sure it" +
+                           "has the right format and contains the right ids.")
 
     # partition the data indices into two sets and evaluate separately
     splitpoint = int(np.round(len(groundtruth) * 0.15))
-    score_p = accuracy_score(groundtruth['v0'][:splitpoint], predictions['v0'][:splitpoint])
-    score_f = accuracy_score(groundtruth['v0'][splitpoint:], predictions['v0'][splitpoint:])
+    score_p = accuracy_score(groundtruth['v0'][:splitpoint],
+                             predictions['v0'][:splitpoint])
+    score_f = accuracy_score(groundtruth['v0'][splitpoint:],
+                             predictions['v0'][splitpoint:])
 
     return (score_p, score_f)
+
 
 @app.route('/scores', methods=['GET', 'POST'])
 @login_required
 def scores():
     competitions = Competition.query.all()
     return render_template('scores.html', competitions=competitions)
+
+
+# @app.route("/plots")
+def plot_confusion_matrix(user_id):
+    cmap = plt.cm.Blues
+    normalize = False
+    title = 'Confusion matrix'
+    regex = r'(\d+),(.+)'
+    competition_id = 0
+    classes = ["functional", "non functional", "functional needs repair"]
+    competitions = Competition.query.all()
+    for c in competitions:
+        if c.name == "ESTIAM 2018":
+            competition_id = c.id
+    # users = User.query.all()
+    # username = ""
+    score = 0
+    filepath = ""
+    # for u in users:
+    #     if u.user_id == user_id:
+    #         username = u.username
+    submissions = Submission.query.all()
+    for s in submissions:
+        if str(s.user_id) == str(user_id) and s.competition_id == competition_id:
+            if s.score > score:
+                filepath = os.path.join(
+                        "/home/ubuntu/submission/app/files/upload/",
+                        s.filename)
+                score = s.score
+
+    print("SCORE : " + str(score))
+    print("FILEPATH : " + filepath)
+    # parse files
+    # filename = "C:\\Users\\jerem\\Documents\\ESTIAM\\UE Datascience" +
+    # "\\test_only_labels.csv"
+    predictions = np.fromregex(filepath, regex, [('id', np.int64),
+                                                 ('v0', 'S128')])
+    groundtruth_filename = os.path.join(
+            "/home/ubuntu/submission/app/files/groundtruth/",
+            Competition.query.get(competition_id).groundtruth)
+    groundtruth = np.fromregex(
+            groundtruth_filename,
+            regex,
+            [('id', np.int64), ('v0', 'S128')])
+    cm = confusion_matrix(groundtruth['v0'], predictions['v0'])
+    """
+    This function prints and plots the confusion matrix.
+    Normalization can be applied by setting `normalize=True`.
+    """
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        print("Normalized confusion matrix")
+    else:
+        print('Confusion matrix, without normalization')
+
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], fmt),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    img = io.BytesIO()
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.savefig(img, format='png')
+    img.seek(0)
+
+    plot_url = base64.b64encode(img.getvalue()).decode()
+
+    print("PLOT_URL : " + plot_url)
+    plt.close()
+    return '<img src="data:image/png;base64,{}">'.format(plot_url)
+
+
+@app.route('/plots', methods=['GET', 'POST'])
+@login_required
+def plots():
+    users = User.query.all()
+    return render_template('plots.html', users=users)
+
+
+@app.route('/_get_datas', methods=['POST'])
+@login_required
+def get_users():
+    if request.method == 'POST':
+        user_id = request.form.get('users')
+        # submissions = Submission.query.filter(Submission.competition_id==competition_id)
+        s = plot_confusion_matrix(user_id)
+        return jsonify({"count": 1, "s": s})
+
 
 @app.route('/_get_submissions', methods=['POST'])
 @login_required
@@ -141,7 +256,7 @@ def get_submissions():
 
         rows = ""
         for d in dates:
-            row = '{{"c":[{{"v":"Date({0},{1},{2},{3},{4},{5})"}}'.format(d.year, d.month - 1, d.day, d.hour + 1, d.minute, d.second)
+            row = '{{"c":[{{"v":"Date({0},{1},{2},{3},{4},{5})"}}'.format(d.year, d.month - 1, d.day, d.hour, d.minute, d.second)
             for u in user_ids:
                 s = submissions.filter(Submission.submitted_on==d).filter(Submission.user_id==u)
                 if s.count() > 0:
@@ -186,6 +301,7 @@ class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
         return login.current_user.has_role('admin')
 
+
 class AdminModelView(ModelView):
 
     can_set_page_size = True
@@ -197,6 +313,7 @@ class AdminModelView(ModelView):
 #    def inaccessible_callback(self, name, **kwargs):
 #        # redirect to login page if user doesn't have access
 #        return redirect(url_for('security.login', next=request.url))
+
 
 class UserAdmin(ModelView):
 
@@ -268,6 +385,7 @@ def get_groundtruth(filename):
     else:
         abort(403)
 
+
 @login_required
 @app.route('/submissions/<filename>')
 def get_submission(filename):
@@ -275,14 +393,16 @@ def get_submission(filename):
     submissions = Submission.query.filter_by(filename=filename)
 
     # make sure the current user is whether admin or the user who actually submitted the file
-    if ( submissions.count() > 0 and (login.current_user.has_role('admin') or login.current_user.id == submissions.first().user_id)):
+    if (submissions.count() > 0 and (login.current_user.has_role('admin') or login.current_user.id == submissions.first().user_id)):
         return send_from_directory(app.config['UPLOAD_FOLDER'],
                                    filename)
     else:
         abort(403)
 
+
 class Error(Exception):
     pass
+
 
 class ParsingError(Error):
     pass
